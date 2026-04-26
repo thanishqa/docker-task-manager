@@ -2,22 +2,100 @@
 <html>
 <head>
     <title>Task Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 8px;
+        }
+
+        button {
+            padding: 8px 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        a {
+            margin-left: 10px;
+            text-decoration: none;
+            color: red;
+        }
+
+        .complete {
+            color: green;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
+
+<div class="container">
     <h1>Task Manager</h1>
 
     <form action="/add" method="post">
-        <input type="text" name="task" required>
+        <input type="text" name="task" placeholder="Enter task..." required>
         <button type="submit">Add</button>
     </form>
 
     <ul>
         {% for task in tasks %}
         <li>
-            {{ task[1] }}
+            <div>
+                {% if task[2] == 1 %}
+                    <s>{{ task[1] }}</s> <span class="complete">✔</span>
+                {% else %}
+                    {{ task[1] }}
+                    <a href="/complete/{{ task[0] }}" class="complete">Done</a>
+                {% endif %}
+            </div>
+
             <a href="/delete/{{ task[0] }}">Delete</a>
         </li>
         {% endfor %}
     </ul>
+</div>
+
 </body>
 </html>

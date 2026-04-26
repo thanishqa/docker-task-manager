@@ -30,8 +30,24 @@ def delete(id):
     conn.close()
     return redirect('/')
 
+# ✅ NEW FEATURE: mark as completed
+@app.route('/complete/<int:id>')
+def complete(id):
+    conn = get_db()
+    conn.execute('UPDATE tasks SET completed = 1 WHERE id=?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect('/')
+
+
 if __name__ == '__main__':
     conn = get_db()
-    conn.execute('CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, content TEXT)')
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS tasks (
+        id INTEGER PRIMARY KEY,
+        content TEXT,
+        completed INTEGER DEFAULT 0
+    )
+    ''')
     conn.close()
     app.run(host='0.0.0.0', port=5000)
